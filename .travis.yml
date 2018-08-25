@@ -13,7 +13,7 @@ addons:
 install:
 # Upgrade pip setuptools and wheel
 - pip install -U pip wheel setuptools
-- pip install -e .[precommit,testing,docs]
+- pip install -e .[testing,docs,pre-commit]
 
 env:
   matrix:
@@ -23,6 +23,7 @@ env:
     TEST_TYPE: tests
   - TEST_AIIDA_BACKEND: django
     TEST_TYPE: docs
+    READTHEDOCS: 'True'
   - TEST_AIIDA_BACKEND: django
     TEST_TYPE: pre-commit
     
