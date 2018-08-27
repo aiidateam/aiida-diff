@@ -29,7 +29,7 @@
     "setup_requires": ["reentry"],
     "reentry_register": true,
     "install_requires": [
-        "aiida >= 0.11"
+        "aiida-core>=0.12,<1.0.0"
     ],
     "extras_require": {
         "testing": [
@@ -37,10 +37,7 @@
             "wheel>=0.31"
         ],
         "pre-commit": [
-            "pre-commit",
-            "yapf",
-            "prospector",
-            "pylint"
+            "aiida-core[dev_precommit]"
         ],
         "docs": [
             "sphinx"
