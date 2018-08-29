@@ -10,10 +10,14 @@ services:
 addons:
   postgresql: "9.5"
 
-install:
+before_install:
 # Upgrade pip setuptools and wheel
 - pip install -U pip wheel setuptools
+
+install:
 - pip install -e .[testing,docs,pre-commit]
+- reentry scan -r aiida
+- pip install coveralls
 
 env:
   matrix:
