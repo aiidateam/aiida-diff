@@ -20,10 +20,7 @@
             "diff = aiida_diff.parsers:DiffParser"
         ],
         "aiida.cmdline.data": [
-            "diff = aiida_diff.data.data_cli:cli"
-        ],
-        "console_scripts": [
-            "diff-submit=aiida_diff.cli:submit"
+            "diff = aiida_diff.cli:data_cli"
         ]
     },
     "setup_requires": ["reentry"],
