@@ -8,8 +8,7 @@ import shutil
 import pytest
 import os
 
-#from aiida.manage.fixtures import fixture_manager
-from aiida_diff.tests.fixture import fixture_manager
+from aiida.manage.fixtures import fixture_manager
 
 
 def get_backend_str():
