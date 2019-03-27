@@ -9,7 +9,7 @@ import aiida_diff.tests as tests
 import pytest
 
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,too-many-locals
 @pytest.mark.process_execution
 def test_process(new_database, new_workdir):
     """Test running a calculation
@@ -53,4 +53,6 @@ def test_process(new_database, new_workdir):
 
     _result, node = run_get_node(CalculationFactory('diff'), **inputs)
 
-    print(node.outputs)
+    obtained_diff = node.outputs.diff.get_content()
+    assert ('content1' in obtained_diff)
+    assert ('content2' in obtained_diff)
