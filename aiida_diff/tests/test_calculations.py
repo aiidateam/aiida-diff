@@ -54,6 +54,6 @@ def test_process(new_database, new_workdir):
 
     _result, node = run_get_node(CalculationFactory('diff'), **inputs)
 
-    obtained_diff = node.outputs.diff.get_content()
-    assert ('content1' in obtained_diff)
-    assert ('content2' in obtained_diff)
+    computed_diff = node.outputs.diff.get_content()
+    assert 'content1' in computed_diff
+    assert 'content2' in computed_diff
