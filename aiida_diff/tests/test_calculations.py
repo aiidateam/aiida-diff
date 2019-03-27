@@ -18,7 +18,8 @@ def test_process(new_database, new_workdir):
     from aiida.engine import run_get_node
 
     # get code
-    code = tests.get_code(entry_point='diff')
+    computer = tests.get_computer(workdir=new_workdir)
+    code = tests.get_code(entry_point='diff', computer=computer)
 
     # Prepare input parameters
     DiffParameters = DataFactory('diff')
