@@ -20,27 +20,30 @@
             "diff = aiida_diff.parsers:DiffParser"
         ],
         "aiida.cmdline.data": [
-            "diff = aiida_diff.data.data_cli:cli"
-        ],
-        "console_scripts": [
-            "diff-submit=aiida_diff.cli:submit"
+            "diff = aiida_diff.cli:data_cli"
         ]
     },
+    "include_package_data": true,
     "setup_requires": ["reentry"],
     "reentry_register": true,
     "install_requires": [
-        "aiida >= 0.11"
+        "aiida-core>=1.0.0b1,<2.0.0",
+        "six",
+        "voluptuous"
     ],
     "extras_require": {
         "testing": [
-            "aiida-core[testing]",
-            "wheel>=0.31"
+            "pgtest==1.2.0",
+            "wheel>=0.31",
+            "coverage",
+            "pytest>=3.6.3,<5.0.0",
+            "pytest-cov>=2.6.1,<5.0.0"
         ],
         "pre-commit": [
-            "pre-commit",
-            "yapf",
-            "prospector",
-            "pylint"
+            "pre-commit==1.11.0",
+            "yapf==0.26.0",
+            "prospector==0.12.11",
+            "pylint==1.9.4"
         ],
         "docs": [
             "sphinx"

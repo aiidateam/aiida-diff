@@ -1,24 +1,87 @@
+---
+# Configuration of integration tests on travis-ci.org
 language: python
-python:
-- "2.7"
 
 cache: pip
 
 services:
-- postgresql
+  - postgresql
+  - rabbitmq
 
 addons:
-  postgresql: "9.5"
-
-install:
-# Upgrade pip setuptools and wheel
-- pip install -U pip wheel setuptools
-- pip install -e .[precommit,testing]
+  postgresql: "9.6"
 
 env:
-- TEST_AIIDA_BACKEND=django
-- TEST_AIIDA_BACKEND=sqlalchemy
+  global:
+  - TEST_AIIDA_BACKEND: django
+  - AIIDA_DEVELOP_GIT_HASH: 0ca5d991d039dca2261df3d6ad8da2f03d591caa
+  # show timings of tests
+  - PYTEST_ADDOPTS: --durations=0
+
+matrix:
+  include:
+  # python27, develop aiida-core
+  - name: "python-2.7 develop (django)"
+    python: 2.7
+    env:
+      AIIDA_VERSION: develop
+      TEST_TYPE: tests
+  - name: "python-2.7 develop (sqla)"
+    python: 2.7
+    env:
+      AIIDA_VERSION: develop
+      TEST_TYPE: tests
+      TEST_AIIDA_BACKEND: sqlalchemy
+  - name: "python-2.7 develop (pre-commit)"
+    python: 2.7
+    env:
+      AIIDA_VERSION: develop
+      TEST_TYPE: pre-commit
+
+  # python36, develop aiida-core
+  - name: "python-3.6 develop (django)"
+    python: 3.6
+    env:
+      AIIDA_VERSION: develop
+      TEST_TYPE: tests
+  - name: "python-3.6 develop (sqla)"
+    python: 3.6
+    env:
+      AIIDA_VERSION: develop
+      TEST_TYPE: tests
+      TEST_AIIDA_BACKEND: sqlalchemy
+  - name: "python-3.6 develop (docs)"
+    python: 3.6
+    env:
+      AIIDA_VERSION: develop
+      TEST_TYPE: docs
+      READTHEDOCS: 'True'
+  - name: "python-3.6 develop (pre-commit)"
+    python: 3.6
+    env:
+      AIIDA_VERSION: develop
+      TEST_TYPE: pre-commit
+
+  # Remove this to enforce the AiiDA coding style
+  allow_failures: 
+  - TEST_TYPE: pre-commit
+
+before_install:
+# Upgrade pip setuptools and wheel
+- pip install -U pip wheel setuptools
+- pip install pip==18.1
+
+install:
+- if [ "$AIIDA_VERSION" == "develop" ]; then .ci/install_aiida_github.sh ; fi  # installs develop branch
+- pip install -e .[testing,docs,pre-commit]
+- reentry scan -r aiida
+- pip install coveralls
 
 script:
-- python manage.py  # runs unit tests
-- python .travis-data/check_version.py
+- if [ "$TEST_TYPE" == "tests" ] ; then py.test --cov aiida_diff --cov-append . ; fi  # runs unit tests
+- if [ "$TEST_TYPE" == "docs" ] ; then cd docs; make; fi  # creates documentation
+# runs precommit checks (failures allowed)
+- if [ "$TEST_TYPE" == "pre-commit" ] ; then pre-commit install; pre-commit run --all-files || ( git status --short; git diff ; exit 1 ); fi
+
+after_success:
+- coveralls

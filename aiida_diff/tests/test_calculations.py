@@ -1,43 +1,59 @@
 """ Tests for calculations
 
 """
-import aiida_diff.tests as tests
-from aiida.utils.fixtures import PluginTestCase
+from __future__ import print_function
+from __future__ import absolute_import
+
 import os
+import aiida_diff.tests as tests
+import pytest
 
 
-class TestDiff(PluginTestCase):
-    def setUp(self):
-        # Set up code, if it does not exist
-        self.code = tests.get_code(entry_point='diff')
+# pylint: disable=unused-argument,too-many-locals
+@pytest.mark.process_execution
+def test_process(new_database, new_workdir):
+    """Test running a calculation
+    note this does not test that the expected outputs are created of output parsing"""
+    from aiida.plugins import DataFactory, CalculationFactory
+    from aiida.engine import run_get_node
 
-    def test_submit(self):
-        """Test submitting a calculation"""
-        from aiida.orm.data.singlefile import SinglefileData
+    # get code
+    computer = tests.get_computer(workdir=new_workdir)
+    code = tests.get_code(entry_point='diff', computer=computer)
 
-        code = self.code
+    # Prepare input parameters
+    DiffParameters = DataFactory('diff')
+    parameters = DiffParameters({'ignore-case': True})
 
-        # Prepare input parameters
-        from aiida.orm import DataFactory
-        DiffParameters = DataFactory('diff')
-        parameters = DiffParameters({'ignore-case': True})
+    from aiida.orm import SinglefileData
+    file1 = SinglefileData(
+        file=os.path.join(tests.TEST_DIR, "input_files", 'file1.txt'))
+    file2 = SinglefileData(
+        file=os.path.join(tests.TEST_DIR, "input_files", 'file2.txt'))
 
-        file1 = SinglefileData(file=os.path.join(tests.TEST_DIR, 'file1.txt'))
-        file2 = SinglefileData(file=os.path.join(tests.TEST_DIR, 'file2.txt'))
+    # set up calculation
+    options = {
+        "resources": {
+            "num_machines": 1,
+            "num_mpiprocs_per_machine": 1,
+        },
+        "max_wallclock_seconds": 30,
+    }
 
-        # set up calculation
-        calc = code.new_calc()
-        calc.label = "aiida_diff test"
-        calc.description = "Test job submission with the aiida_diff plugin"
-        calc.set_max_wallclock_seconds(30)
-        calc.set_withmpi(False)
-        calc.set_resources({"num_machines": 1, "num_mpiprocs_per_machine": 1})
+    inputs = {
+        'code': code,
+        'parameters': parameters,
+        'file1': file1,
+        'file2': file2,
+        'metadata': {
+            'options': options,
+            'label': "aiida_diff test",
+            'description': "Test job submission with the aiida_diff plugin",
+        },
+    }
 
-        calc.use_parameters(parameters)
-        calc.use_file1(file1)
-        calc.use_file2(file2)
+    _result, node = run_get_node(CalculationFactory('diff'), **inputs)
 
-        calc.store_all()
-        calc.submit()
-        print("submitted calculation; calc=Calculation(uuid='{}') # ID={}"\
-                .format(calc.uuid,calc.dbnode.pk))
+    computed_diff = node.outputs.diff.get_content()
+    assert 'content1' in computed_diff
+    assert 'content2' in computed_diff
