@@ -60,7 +60,7 @@ jobs:
 
 
 
-- job: pre-commit
+- job: pre_commit
   strategy:
     matrix:
       Python27:
