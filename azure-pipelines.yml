@@ -58,12 +58,20 @@ jobs:
   - script: pre-commit install; pre-commit run --all-files || ( git status --short; git diff ; exit 1 );
     displayName: 'Run pre-commit check'
 
-- job: coveralls
-  dependsOn:
-    - test
-  steps:
-  - script: coveralls
-    displayName: 'Upload test coverage to coveralls.io'
+#- job: coveralls
+#  dependsOn:
+#    - test
+#  steps:
+#  - task: UsePythonVersion@0
+#    inputs:
+#      versionSpec: '3.6'
+#      architecture: 'x64'
+#
+#  - script: pip install coveralls
+#    displayName: 'install coveralls'
+#
+#  - script: coveralls
+#    displayName: 'Upload test coverage to coveralls.io'
 
 # - job: 'Publish'
 #   dependsOn:
