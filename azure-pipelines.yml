@@ -21,7 +21,8 @@ jobs:
     maxParallel: 4
 
   steps:
-  - template: .ci/azure-templates/setup-steps.yml
+  #- template: .ci/azure-templates/setup-steps.yml
+  - template: .ci/azure-templates/conda-steps.yml
   - template: .ci/azure-templates/install-steps.yml
 
   - script: service rabbitmq-server status
