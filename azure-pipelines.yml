@@ -24,6 +24,11 @@ jobs:
   - template: .ci/azure-templates/setup-steps.yml
   - template: .ci/azure-templates/install-steps.yml
 
+  - script: service rabbitmq-server status
+
+  - script: verdi status
+    displayName: 'verdi status'
+
   - script: |
       py.test --junitxml=test-results.xml --cov aiida_zeopp --cov-append .
     displayName: 'Run pytest'
