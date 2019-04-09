@@ -66,60 +66,22 @@ matrix:
   allow_failures: 
   - TEST_TYPE: pre-commit
 
+before_install:
+# Upgrade pip setuptools and wheel
+- pip install -U pip wheel setuptools
+- pip install pip==18.1
 
-# Instructions for automatic deployment of new git tags to PyPI:
-# - create deploy bot account on PyPI
-# - add bot account as maintainer to your PyPI project
-# - Install travis cli tool, see https://docs.travis-ci.com/user/encryption-keys/
-# - cd to your git repository; travis login --org
-# - travis encrypt <pw of bot account>
-# - paste encrypted password to `secure`
-jobs:
-  include:
-    - stage: test
-      before_install:
-      # Upgrade pip setuptools and wheel
-      - pip install -U pip wheel setuptools
-      - pip install pip==18.1
-      
-      install:
-      - if [ "$AIIDA_VERSION" == "develop" ]; then .ci/install_aiida_github.sh ; fi  # installs develop branch
-      - pip install -e .[testing,docs,pre-commit]
-      - reentry scan -r aiida
-      - pip install coveralls
-      
-      script:
-      - if [ "$TEST_TYPE" == "tests" ] ; then py.test --cov aiida_diff --cov-append . ; fi  # runs unit tests
-      - if [ "$TEST_TYPE" == "docs" ] ; then cd docs; make; fi  # creates documentation
-      # runs precommit checks (failures allowed)
-      - if [ "$TEST_TYPE" == "pre-commit" ] ; then pre-commit install; pre-commit run --all-files || ( git status --short; git diff ; exit 1 ); fi
-      
-      after_success:
-      - coveralls
+install:
+- if [ "$AIIDA_VERSION" == "develop" ]; then .ci/install_aiida_github.sh ; fi  # installs develop branch
+- pip install -e .[testing,docs,pre-commit]
+- reentry scan -r aiida
+- pip install coveralls
 
-    - stage: deploy
-      # Make sure the tag is valid semver
-      if: "tag =~ ^v[0-9]+\\.[0-9]+\\.[0-9]+(a|b|rc)?[0-9]*$"
-      services: ignore
-      addons: skip
-      python: 3.6
-      before_install: skip
-      install: skip
-      before_script: skip
-      script: skip
-      env: ignore
-      before_deploy:
-        - echo "About to deploy $TRAVIS_TAG to PyPI"
-      after_deploy:
-        - echo "Deployed $TRAVIS_TAG to PyPI"
-      deploy: &pypi
-        provider: pypi
-        skip_existing: true
-        username: aiida-bot
-        password:
-          # See https://docs.travis-ci.com/user/encryption-keys/ for instructions
-          secure: "YFc8cvOBzLbq6eK8FaYwC/Q8vfc6akXs6OqEDFLkr0rjFRztTIHVzo3YhvUzoI0HtFnNiXd4Io6GMZZKDuIMb8lLJmOTzkhayHsY63mVDt273V+fb0dMqp1Sl/ezzqYxCdD6Z9qP6BfnszI8MQC2MOmJKZ/8bg3Bxhe2EArIX2Yq0XM24L8wBSvS9xaImpZDn4E/6A4jA6LwEtAaarrxiJ4hW15YVfMTNdK3vlypO+Yrr+kOu6nav/D8CTcSZIG7ELr/6wCbvpI1loYJ0BRdWTdnT7qrTm4d7sfVBl+XBTU0kPgcS2tnfyilSVu19F070q4tSWqzZLRtfaKA4py9iCeqmd53kTudxxMi8bmzAcnsQLdnfHHZZPEo3Eh1k+T7b++P+nl8i2KwFBAVwTsFkqL7rdtNB+I7i9vgXxS5bTlBQ4UApwLXt7eFY3rOy/Ta/7sBYScqz9CZpjtqDsZK8zsY4E7uHCbRHToAQPCOg7DO8NymWn/iJ/Fu78pOKdTJShRekxA/J4VjVglhErJSIuqa0QZfTEVqUF1MAAaX+Y0iT2va+AeJb60xfqWoxwe1rUhUu00CBWnoyx2nhGK6LTNXNdX5I74cLr64wiGV1eKAR+llTMluQMmFjue6WiMHT6iQioy5zU8E64fF5wb2EUjYGvA2sJ9lRA1Yex+Yd7o="
-        on:
-          repo: aiidateam/aiida-diff
-          branch: master
-          tags: true
+script:
+- if [ "$TEST_TYPE" == "tests" ] ; then py.test --cov aiida_diff --cov-append . ; fi  # runs unit tests
+- if [ "$TEST_TYPE" == "docs" ] ; then cd docs; make; fi  # creates documentation
+# runs precommit checks (failures allowed)
+- if [ "$TEST_TYPE" == "pre-commit" ] ; then pre-commit install; pre-commit run --all-files || ( git status --short; git diff ; exit 1 ); fi
+
+after_success:
+- coveralls
