@@ -1,8 +1,8 @@
 {
     "name": "aiida-diff",
-    "author": "The AiiDA developers group",
+    "author": "The AiiDA Team",
     "author_email": "",
-    "description": "AiiDA demo plugin that computes the difference between two files.",
+    "description": "AiiDA demo plugin that wraps the `diff` executable for computing the difference between two files.",
     "url": "https://github.com/aiidateam/aiida-diff",
     "license": "MIT",
     "classifiers": [

@@ -19,6 +19,7 @@ def get_backend_str():
     """
     from aiida.backends.profile import BACKEND_DJANGO, BACKEND_SQLA
     backend_env = os.environ.get('TEST_AIIDA_BACKEND')
+    # pylint: disable=no-else-return
     if not backend_env:
         return BACKEND_DJANGO
     elif backend_env in (BACKEND_DJANGO, BACKEND_SQLA):
@@ -49,3 +50,55 @@ def new_workdir():
     dirpath = tempfile.mkdtemp()
     yield dirpath
     shutil.rmtree(dirpath)
+
+
+@pytest.fixture(scope='function')
+def aiida_computer(new_workdir):
+    """get an AiiDA computer.
+    
+    :return: The computer node
+    :rtype: :py:class:`aiida.orm.Computer`
+    """
+    from aiida.orm import Computer
+    name = 'localhost-test'
+
+    computer = Computer(
+        name=name,
+        description='localhost computer set up by aiida_diff tests',
+        hostname=name,
+        workdir=new_workdir,
+        transport_type='local',
+        scheduler_type='direct')
+    computer.store()
+    computer.configure()
+
+    return computer
+
+
+@pytest.fixture(scope='function')
+def aiida_code(aiida_computer):
+    """get an AiiDA code.
+    
+    :return: The code node
+    :rtype: :py:class:`aiida.orm.Code`
+    """
+    from aiida.orm import Code
+    from aiida_diff.tests import executables, get_path_to_executable
+    entry_point = 'diff'
+
+    try:
+        executable = executables[entry_point]
+    except KeyError:
+        raise KeyError(
+            "Entry point {} not recognized. Allowed values: {}".format(
+                entry_point, list(executables.keys())))
+
+    path = get_path_to_executable(executable)
+    code = Code(
+        input_plugin_name=entry_point,
+        remote_computer_exec=[aiida_computer, path],
+    )
+    code.label = executable
+    code.store()
+
+    return code
