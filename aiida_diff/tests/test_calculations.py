@@ -27,23 +27,15 @@ def test_process(aiida_code):
         file=os.path.join(tests.TEST_DIR, "input_files", 'file2.txt'))
 
     # set up calculation
-    options = {
-        "resources": {
-            "num_machines": 1,
-            "num_mpiprocs_per_machine": 1,
-        },
-        "max_wallclock_seconds": 30,
-    }
-
     inputs = {
         'code': aiida_code,
         'parameters': parameters,
         'file1': file1,
         'file2': file2,
         'metadata': {
-            'options': options,
-            'label': "aiida_diff test",
-            'description': "Test job submission with the aiida_diff plugin",
+            'options': {
+                'max_wallclock_seconds': 30
+            },
         },
     }
 
