@@ -9,11 +9,6 @@ import pytest
 
 from aiida.manage.fixtures import fixture_manager
 
-#def pytest_configure(config):
-#    import warnings
-#    from django.utils.deprecation import RemovedInDjango20Warning
-#    warnings.filterwarnings(action="ignore", category=RemovedInDjango20Warning)
-
 
 @pytest.fixture(scope='session', autouse=True)
 def aiida_profile():
