@@ -35,7 +35,7 @@ def new_workdir():
 @pytest.fixture(scope='function')
 def aiida_localhost_computer(new_workdir):
     """Get an AiiDA computer for localhost.
-    
+
     :return: The computer node
     :rtype: :py:class:`aiida.orm.Computer`
     """
@@ -49,7 +49,7 @@ def aiida_localhost_computer(new_workdir):
 @pytest.fixture(scope='function')
 def aiida_code(aiida_localhost_computer):
     """Get an AiiDA code.
-    
+
     :return: The code node
     :rtype: :py:class:`aiida.orm.Code`
     """

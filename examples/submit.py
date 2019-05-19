@@ -24,13 +24,14 @@ file1 = SinglefileData(
 file2 = SinglefileData(
     file=os.path.join(tests.TEST_DIR, "input_files", 'file2.txt'))
 
+# set up calculation
 inputs = {
     'code': code,
     'parameters': parameters,
     'file1': file1,
     'file2': file2,
     'metadata': {
-        'description': "Test job submission with the aiida_diff plugin"
+        'description': "Test job submission with the aiida_diff plugin",
     },
 }
 
