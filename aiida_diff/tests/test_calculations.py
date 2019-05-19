@@ -6,10 +6,8 @@ from __future__ import absolute_import
 
 import os
 from aiida_diff import tests
-import pytest
 
 
-@pytest.mark.process_execution
 def test_process(aiida_code):
     """Test running a calculation
     note this does not test that the expected outputs are created of output parsing"""

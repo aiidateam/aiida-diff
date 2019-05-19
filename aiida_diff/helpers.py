@@ -72,13 +72,13 @@ def get_computer(name=LOCALHOST_NAME, workdir=None):
     return computer
 
 
-def get_code(entry_point, computer=None):
+def get_code(entry_point, computer):
     """Get local code.
 
     Sets up code for given entry point on given computer.
     
     :param entry_point: Entry point of calculation plugin
-    :param computer_name: Name of (local) computer
+    :param computer: (local) AiiDA computer
 
     :return: The code node 
     :rtype: :py:class:`aiida.orm.Code` 
@@ -92,9 +92,6 @@ def get_code(entry_point, computer=None):
         raise KeyError(
             "Entry point {} not recognized. Allowed values: {}".format(
                 entry_point, list(executables.keys())))
-
-    if computer is None:
-        computer = get_computer()
 
     try:
         code = Code.get_from_string('{}@{}'.format(executable,
