@@ -49,8 +49,10 @@ class DiffParser(Parser):
         if not set(files_expected) <= set(files_retrieved):
             self.logger.error("Found files '{}', expected to find '{}'".format(
                 files_retrieved, files_expected))
+            return self.exit_codes.ERROR_MISSING_OUTPUT_FILES
 
         # add output file
+        self.logger.info("Parsing '{}'".format(output_filename))
         with self.retrieved.open(output_filename, 'rb') as handle:
             output_node = SinglefileData(file=handle)
         self.out('diff', output_node)
