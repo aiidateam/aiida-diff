@@ -22,6 +22,7 @@ import aiida_diff
 
 # -- AiiDA-related setup --------------------------------------------------
 
+# ensure all entry point plugins are lodaed
 manager.scan()
 
 # Load the dummy profile even if we are running locally, this way the documentation will succeed even if the current
