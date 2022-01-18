@@ -1,7 +1,7 @@
-[![Build Status](https://github.com/aiidateam/aiida-diff/workflows/ci/badge.svg?branch=master)](https://github.com/aiidateam/aiida-diff/actions)
-[![Coverage Status](https://coveralls.io/repos/github/aiidateam/aiida-diff/badge.svg?branch=master)](https://coveralls.io/github/aiidateam/aiida-diff?branch=master)
-[![Docs status](https://readthedocs.org/projects/aiida-diff/badge)](http://aiida-diff.readthedocs.io/)
-[![PyPI version](https://badge.fury.io/py/aiida-diff.svg)](https://badge.fury.io/py/aiida-diff)
+[![Build Status][ci-badge]][ci-link]
+[![Coverage Status][cov-badge]][cov-link]
+[![Docs status][docs-badge]][docs-link]
+[![PyPI version][pypi-badge]][pypi-link]
 
 # aiida-diff
 
@@ -25,22 +25,16 @@ intended to help developers get started with their AiiDA plugins.
 * [`docs/`](docs/): A documentation template ready for publication on [Read the Docs](http://aiida-diff.readthedocs.io/en/latest/)
 * [`examples/`](examples/): An example of how to submit a calculation using this plugin
 * [`tests/`](tests/): Basic regression tests using the [pytest](https://docs.pytest.org/en/latest/) framework (submitting a calculation, ...). Install `pip install -e .[testing]` and run `pytest`.
-* [`.coveragerc`](.coveragerc): Configuration of [coverage.py](https://coverage.readthedocs.io/en/latest) tool reporting which lines of your plugin are covered by tests
 * [`.gitignore`](.gitignore): Telling git which files to ignore
 * [`.pre-commit-config.yaml`](.pre-commit-config.yaml): Configuration of [pre-commit hooks](https://pre-commit.com/) that sanitize coding style and check for syntax errors. Enable via `pip install -e .[pre-commit] && pre-commit install`
 * [`.readthedocs.yml`](.readthedocs.yml): Configuration of documentation build for [Read the Docs](https://readthedocs.org/)
 * [`LICENSE`](LICENSE): License for your plugin
-* [`MANIFEST.in`](MANIFEST.in): Configure non-Python files to be included for publication on [PyPI](https://pypi.org/)
 * [`README.md`](README.md): This file
 * [`conftest.py`](conftest.py): Configuration of fixtures for [pytest](https://docs.pytest.org/en/latest/)
-* [`pytest.ini`](pytest.ini): Configuration of [pytest](https://docs.pytest.org/en/latest/) test discovery
-* [`setup.json`](setup.json): Plugin metadata for registration on [PyPI](https://pypi.org/) and the [AiiDA plugin registry](https://aiidateam.github.io/aiida-registry/) (including entry points)
-* [`setup.py`](setup.py): Installation script for pip / [PyPI](https://pypi.org/)
-
+* [`pyproject.toml`](setup.json): Python package metadata for registration on [PyPI](https://pypi.org/) and the [AiiDA plugin registry](https://aiidateam.github.io/aiida-registry/) (including entry points)
 
 See also the following video sequences from the 2019-05 AiiDA tutorial:
 
- * [aiida-diff setup.json](https://www.youtube.com/watch?v=2CxiuiA1uVs&t=240s)
  * [run aiida-diff example calculation](https://www.youtube.com/watch?v=2CxiuiA1uVs&t=403s)
  * [aiida-diff CalcJob plugin](https://www.youtube.com/watch?v=2CxiuiA1uVs&t=685s)
  * [aiida-diff Parser plugin](https://www.youtube.com/watch?v=2CxiuiA1uVs&t=936s)
@@ -109,6 +103,7 @@ verdi data diff export <PK>
 ```shell
 git clone https://github.com/aiidateam/aiida-diff .
 cd aiida-diff
+pip install --upgrade pip
 pip install -e .[pre-commit,testing]  # install extra dependencies
 pre-commit install  # install pre-commit hooks
 pytest -v  # discover and run all tests
@@ -119,3 +114,13 @@ See the [developer guide](http://aiida-diff.readthedocs.io/en/latest/developer_g
 ## License
 
 MIT
+
+
+[ci-badge]: https://github.com/aiidateam/aiida-diff/workflows/ci/badge.svg?branch=master
+[ci-link]: https://github.com/aiidateam/aiida-diff/actions
+[cov-badge]: https://coveralls.io/repos/github/aiidateam/aiida-diff/badge.svg?branch=master
+[cov-link]: https://coveralls.io/github/aiidateam/aiida-diff?branch=master
+[docs-badge]: https://readthedocs.org/projects/aiida-diff/badge
+[docs-link]: http://aiida-diff.readthedocs.io/
+[pypi-badge]: https://badge.fury.io/py/aiida-diff.svg
+[pypi-link]: https://badge.fury.io/py/aiida-diff
