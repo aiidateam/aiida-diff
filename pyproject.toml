@@ -22,9 +22,7 @@ classifiers = [
 keywords = ["aiida", "plugin"]
 requires-python = ">=3.7"
 dependencies = [
-    "aiida-core>=1.1.0,<2.0.0",
-    "sqlalchemy<1.4",
-    "psycopg2-binary<2.9",
+    "aiida-core>=1.6.4,<3",
     "voluptuous"
 ]
 
@@ -47,7 +45,8 @@ docs = [
     "sphinx",
     "sphinxcontrib-contentui",
     "sphinxcontrib-details-directive",
-    "furo"
+    "furo",
+    "markupsafe<2.1"
 ]
 
 [project.entry-points."aiida.data"]
