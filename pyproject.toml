@@ -20,9 +20,9 @@ classifiers = [
     "Framework :: AiiDA"
 ]
 keywords = ["aiida", "plugin"]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
-    "aiida-core>=1.6.4,<3",
+    "aiida-core>=2.0,<3",
     "voluptuous"
 ]
 
@@ -83,7 +83,6 @@ python_files = "test_*.py example_*.py"
 filterwarnings = [
     "ignore::DeprecationWarning:aiida:",
     "ignore::DeprecationWarning:plumpy:",
-    "ignore::DeprecationWarning:django:",
     "ignore::DeprecationWarning:yaml:",
 ]
 
@@ -107,14 +106,18 @@ envlist = py38
 [testenv]
 usedevelop=True
 
-[testenv:py{37,38,39,310}]
+[testenv:py{38,39,310}]
 description = Run the test suite against a python version
 extras = testing
+setenv =
+    AIIDA_WARN_v3 = 1
 commands = pytest {posargs}
 
 [testenv:pre-commit]
 description = Run the pre-commit checks
-extras = pre-commit
+extras =
+    pre-commit
+    testing
 commands = pre-commit run {posargs}
 
 [testenv:docs]

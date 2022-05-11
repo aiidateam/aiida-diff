@@ -24,7 +24,7 @@ class DiffParser(Parser):
         Checks that the ProcessNode being passed was produced by a DiffCalculation.
 
         :param node: ProcessNode of calculation
-        :param type node: :class:`aiida.orm.ProcessNode`
+        :param type node: :class:`aiida.orm.nodes.process.process.ProcessNode`
         """
         super().__init__(node)
         if not issubclass(node.process_class, DiffCalculation):
@@ -39,7 +39,7 @@ class DiffParser(Parser):
         output_filename = self.node.get_option("output_filename")
 
         # Check that folder content is as expected
-        files_retrieved = self.retrieved.list_object_names()
+        files_retrieved = self.retrieved.base.repository.list_object_names()
         files_expected = [output_filename]
         # Note: set(A) <= set(B) checks whether A is a subset of B
         if not set(files_expected) <= set(files_retrieved):
@@ -50,7 +50,7 @@ class DiffParser(Parser):
 
         # add output file
         self.logger.info(f"Parsing '{output_filename}'")
-        with self.retrieved.open(output_filename, "rb") as handle:
+        with self.retrieved.base.repository.open(output_filename, "rb") as handle:
             output_node = SinglefileData(file=handle)
         self.out("diff", output_node)
 
