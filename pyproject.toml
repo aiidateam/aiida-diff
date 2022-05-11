@@ -115,7 +115,9 @@ commands = pytest {posargs}
 
 [testenv:pre-commit]
 description = Run the pre-commit checks
-extras = pre-commit
+extras = 
+    pre-commit
+    testing
 commands = pre-commit run {posargs}
 
 [testenv:docs]
