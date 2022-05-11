@@ -20,7 +20,7 @@ classifiers = [
     "Framework :: AiiDA"
 ]
 keywords = ["aiida", "plugin"]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
     "aiida-core>=2.0,<3",
     "voluptuous"
@@ -106,7 +106,7 @@ envlist = py38
 [testenv]
 usedevelop=True
 
-[testenv:py{37,38,39,310}]
+[testenv:py{38,39,310}]
 description = Run the test suite against a python version
 extras = testing
 setenv =
@@ -115,7 +115,7 @@ commands = pytest {posargs}
 
 [testenv:pre-commit]
 description = Run the pre-commit checks
-extras = 
+extras =
     pre-commit
     testing
 commands = pre-commit run {posargs}
