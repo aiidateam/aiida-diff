@@ -29,7 +29,7 @@ def test_run(diff_code):
     DiffParameters = DataFactory("diff")
     parameters = DiffParameters({"ignore-case": True})
 
-    SinglefileData = DataFactory("core.singlefile")
+    SinglefileData = DataFactory("singlefile")
     file1 = SinglefileData(file=path.join(INPUT_DIR, "file1.txt"))
     file2 = SinglefileData(file=path.join(INPUT_DIR, "file2.txt"))
 

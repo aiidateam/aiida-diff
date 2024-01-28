@@ -14,14 +14,14 @@ import os
 import sys
 import time
 
-from aiida.manage.configuration import load_documentation_profile
+from aiida import load_profile
 
 import aiida_diff
 
 # -- AiiDA-related setup --------------------------------------------------
 
-# Load the dummy documentation profile
-load_documentation_profile()
+# Load AiiDA profile
+load_profile()
 
 # -- General configuration ------------------------------------------------
 
@@ -61,7 +61,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "aiida-diff"
-copyright_first_year = "2022"
+copyright_first_year = "2024"
 copyright_owners = "The AiiDA Team"
 
 current_year = str(time.localtime().tm_year)
@@ -87,7 +87,7 @@ version = ".".join(release.split(".")[:2])
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:

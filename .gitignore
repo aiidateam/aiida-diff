@@ -12,4 +12,3 @@
 build/
 dist/
 pip-wheel-metadata/
-.tox/

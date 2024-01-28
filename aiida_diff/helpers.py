@@ -56,8 +56,8 @@ def get_computer(name=LOCALHOST_NAME, workdir=None):
             description="localhost computer set up by aiida_diff tests",
             hostname=name,
             workdir=workdir,
-            transport_type="local",
-            scheduler_type="direct",
+            transport_type="core.local",
+            scheduler_type="core.direct",
         )
         computer.store()
         computer.set_minimum_job_poll_interval(0.0)
@@ -73,16 +73,14 @@ def get_code(entry_point, computer):
     :param entry_point: Entry point of calculation plugin
     :param computer: (local) AiiDA computer
     :return: The code node
-    :rtype: :py:class:`aiida.orm.nodes.data.code.Code`
+    :rtype: :py:class:`aiida.orm.nodes.data.code.installed.InstalledCode`
     """
 
     try:
         executable = executables[entry_point]
     except KeyError as exc:
         raise KeyError(
-            "Entry point '{}' not recognized. Allowed values: {}".format(
-                entry_point, list(executables.keys())
-            )
+            f"Entry point '{entry_point}' not recognized. Allowed values: {list(executables.keys())}"
         ) from exc
 
     codes = Code.objects.find(  # pylint: disable=no-member
