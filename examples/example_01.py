@@ -3,13 +3,12 @@
 
 Usage: ./example_01.py
 """
+
 from os import path
 
 import click
-
 from aiida import cmdline, engine
 from aiida.plugins import CalculationFactory, DataFactory
-
 from aiida_diff import helpers
 
 INPUT_DIR = path.join(path.dirname(path.realpath(__file__)), "input_files")
@@ -26,12 +25,12 @@ def test_run(diff_code):
         diff_code = helpers.get_code(entry_point="diff", computer=computer)
 
     # Prepare input parameters
-    DiffParameters = DataFactory("diff")
-    parameters = DiffParameters({"ignore-case": True})
+    diff_parameters = DataFactory("diff")
+    parameters = diff_parameters({"ignore-case": True})
 
-    SinglefileData = DataFactory("core.singlefile")
-    file1 = SinglefileData(file=path.join(INPUT_DIR, "file1.txt"))
-    file2 = SinglefileData(file=path.join(INPUT_DIR, "file2.txt"))
+    singlefile_data = DataFactory("core.singlefile")
+    file1 = singlefile_data(file=path.join(INPUT_DIR, "file1.txt"))
+    file2 = singlefile_data(file=path.join(INPUT_DIR, "file2.txt"))
 
     # set up calculation
     inputs = {

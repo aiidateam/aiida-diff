@@ -3,6 +3,7 @@ Calculations provided by aiida_diff.
 
 Register calculations via the "aiida.calculations" entry point in setup.json.
 """
+
 from aiida.common import datastructures
 from aiida.engine import CalcJob
 from aiida.orm import SinglefileData
@@ -31,20 +32,14 @@ class DiffCalculation(CalcJob):
         spec.inputs["metadata"]["options"]["parser_name"].default = "diff"
 
         # new ports
-        spec.input(
-            "metadata.options.output_filename", valid_type=str, default="patch.diff"
-        )
+        spec.input("metadata.options.output_filename", valid_type=str, default="patch.diff")
         spec.input(
             "parameters",
             valid_type=DiffParameters,
             help="Command line parameters for diff",
         )
-        spec.input(
-            "file1", valid_type=SinglefileData, help="First file to be compared."
-        )
-        spec.input(
-            "file2", valid_type=SinglefileData, help="Second file to be compared."
-        )
+        spec.input("file1", valid_type=SinglefileData, help="First file to be compared.")
+        spec.input("file2", valid_type=SinglefileData, help="Second file to be compared.")
         spec.output(
             "diff",
             valid_type=SinglefileData,

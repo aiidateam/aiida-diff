@@ -1,4 +1,5 @@
-""" Tests for calculations."""
+"""Tests for calculations."""
+
 import os
 
 from aiida.engine import run
@@ -13,8 +14,8 @@ def test_process(diff_code):
     note this does not test that the expected outputs are created of output parsing"""
 
     # Prepare input parameters
-    DiffParameters = DataFactory("diff")
-    parameters = DiffParameters({"ignore-case": True})
+    diff_parameters = DataFactory("diff")
+    parameters = diff_parameters({"ignore-case": True})
 
     file1 = SinglefileData(file=os.path.join(TEST_DIR, "input_files", "file1.txt"))
     file2 = SinglefileData(file=os.path.join(TEST_DIR, "input_files", "file2.txt"))

@@ -1,9 +1,8 @@
-""" Tests for command line interface."""
-from click.testing import CliRunner
+"""Tests for command line interface."""
 
 from aiida.plugins import DataFactory
-
 from aiida_diff.cli import export, list_
+from click.testing import CliRunner
 
 
 # pylint: disable=attribute-defined-outside-init
@@ -12,8 +11,8 @@ class TestDataCli:
 
     def setup_method(self):
         """Prepare nodes for cli tests."""
-        DiffParameters = DataFactory("diff")
-        self.parameters = DiffParameters({"ignore-case": True})
+        diff_parameters = DataFactory("diff")
+        self.parameters = diff_parameters({"ignore-case": True})
         self.parameters.store()
         self.runner = CliRunner()
 
@@ -31,7 +30,5 @@ class TestDataCli:
         Tests that it can be reached and that it shows the contents of the node
         we have set up.
         """
-        result = self.runner.invoke(
-            export, [str(self.parameters.pk)], catch_exceptions=False
-        )
+        result = self.runner.invoke(export, [str(self.parameters.pk)], catch_exceptions=False)
         assert "ignore-case" in result.output

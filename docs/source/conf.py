@@ -14,10 +14,9 @@ import os
 import sys
 import time
 
+import aiida_diff
 from aiida import load_profile
 from aiida.storage.sqlite_temp import SqliteTempBackend
-
-import aiida_diff
 
 # -- AiiDA-related setup --------------------------------------------------
 
@@ -68,9 +67,7 @@ copyright_owners = "The AiiDA Team"
 
 current_year = str(time.localtime().tm_year)
 copyright_year_string = (
-    current_year
-    if current_year == copyright_first_year
-    else f"{copyright_first_year}-{current_year}"
+    current_year if current_year == copyright_first_year else f"{copyright_first_year}-{current_year}"
 )
 # pylint: disable=redefined-builtin
 copyright = f"{copyright_year_string}, {copyright_owners}. All rights reserved"
@@ -185,6 +182,7 @@ html_search_language = "en"
 # We should ignore any python built-in exception, for instance
 nitpick_ignore = [
     ("py:class", "Logger"),
+    ("py:class", "QbFields"),  # Warning started to appear with aiida 2.6
 ]
 
 
@@ -198,7 +196,7 @@ def run_apidoc(_):
     """
     source_dir = os.path.abspath(os.path.dirname(__file__))
     apidoc_dir = os.path.join(source_dir, "apidoc")
-    package_dir = os.path.join(source_dir, os.pardir, os.pardir, "aiida_diff")
+    package_dir = os.path.join(source_dir, os.pardir, os.pardir, "src", "aiida_diff")
 
     # In #1139, they suggest the route below, but this ended up
     # calling sphinx-build, not sphinx-apidoc
@@ -223,9 +221,7 @@ def run_apidoc(_):
 
     # See https://stackoverflow.com/a/30144019
     env = os.environ.copy()
-    env[
-        "SPHINX_APIDOC_OPTIONS"
-    ] = "members,special-members,private-members,undoc-members,show-inheritance"
+    env["SPHINX_APIDOC_OPTIONS"] = "members,special-members,private-members,undoc-members,show-inheritance"
     subprocess.check_call([cmd_path] + options, env=env)
 
 
